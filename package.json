@@ -1,0 +1,28 @@
+{
+  "name": "video-download-management-platform",
+  "version": "1.0.0",
+  "description": "Video Download, Multilingual Discussion, Subscription Management & Video Calling Platform",
+  "private": true,
+  "scripts": {
+    "install:backend": "npm install --prefix backend",
+    "install:frontend": "npm install --prefix frontend",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "start:backend": "npm run dev --prefix backend",
+    "start:frontend": "npm run dev --prefix frontend",
+    "build:frontend": "npm run build --prefix frontend",
+    "test:backend": "node backend/scratch/test_all_features.js"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "node",
+    "express",
+    "mongodb",
+    "webrtc",
+    "video-calling",
+    "multilingual-comments",
+    "vanilla-js"
+  ],
+  "author": "Hari Karan",
+  "license": "ISC"
+}

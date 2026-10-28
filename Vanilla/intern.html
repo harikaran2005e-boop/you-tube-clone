@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multilingual Commenting System - Video Integrated</title>
+  <link rel="stylesheet" href="intern.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <div>
+      <h1>Commenting System</h1>
+      <p>Multilingual comments integrated with Video Download Management</p>
+    </div>
+
+    <div class="current-user">
+      <img src="youtube.jpg" alt="Profile" onerror="this.src='https://via.placeholder.com/40'">
+      <div>
+        <strong>@harikaran</strong>
+        <small>📍 Tamil Nadu, India</small>
+      </div>
+      <a href="http://localhost:5173" style="margin-left: 12px; color: #2563eb; text-decoration: none; font-size: 0.9rem; font-weight: 600;">🎬 Video Manager</a>
+    </div>
+  </header>
+
+  <!-- VIDEO SELECTOR & COMPOSER -->
+  <section class="card composer">
+    <div style="margin-bottom: 10px;">
+      <label for="videoSelect" style="font-size: 0.9rem; font-weight: 600; color: #475569;">Select Video Context:</label>
+      <select id="videoSelect" style="width: 100%; margin-top: 4px; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc;">
+        <option value="">🌐 All Videos (Global Comments)</option>
+        <option value="6aaa688fc7a8e4a210c6d160">🎬 Download Test Video</option>
+      </select>
+    </div>
+
+    <textarea
+      id="commentInput"
+      maxlength="1000"
+      placeholder="Write your comment..."
+    ></textarea>
+
+    <div class="composer-footer">
+
+      <select id="commentLanguage" aria-label="Comment language"></select>
+
+      <span id="characterCount">0 / 1000</span>
+
+      <button id="postCommentBtn">➤ Post Comment</button>
+
+    </div>
+
+    <div id="composerMessage"></div>
+
+  </section>
+
+  <!-- FILTERS -->
+  <section class="card filters">
+
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="Search comments..."
+    >
+
+    <select id="sortComments">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="liked">Most liked</option>
+      <option value="relevant">Most relevant</option>
+    </select>
+
+    <select id="preferredLanguage" aria-label="Preferred language"></select>
+
+  </section>
+
+  <!-- COMMENTS -->
+  <section id="commentsContainer"></section>
+
+  <!-- MODERATION RECORDS -->
+  <section class="card moderation-card">
+
+    <div class="section-heading">
+      <h2>Moderation Records</h2>
+      <span id="recordCount">0</span>
+    </div>
+
+    <div id="moderationRecords">
+      No moderation records.
+    </div>
+
+  </section>
+
+</div>
+
+<script src="intern.js"></script>
+
+</body>
+</html>
