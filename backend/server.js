@@ -153,24 +153,24 @@ app.use("/api/security", securityRoutes);
 const meetingRoutes = require("./routes/meetingRoutes");
 app.use("/api/meetings", meetingRoutes);
 
-// Serve production frontend build if dist folder exists
+// Serve Vanilla JS implementation under /vanilla route
 const path = require("path");
 const fs = require("fs");
-const frontendDist = path.join(__dirname, "../frontend/dist");
-if (fs.existsSync(frontendDist)) {
-  app.use(express.static(frontendDist));
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith("/api") || req.path.startsWith("/vanilla")) {
-      return next();
-    }
-    res.sendFile(path.join(frontendDist, "index.html"));
-  });
-}
-
-// Serve Vanilla JS implementation under /vanilla route
 const vanillaDist = path.join(__dirname, "../Vanilla");
 if (fs.existsSync(vanillaDist)) {
   app.use("/vanilla", express.static(vanillaDist));
+}
+
+// Serve production frontend build if dist folder exists (Express 5 compatible SPA routing)
+const frontendDist = path.join(__dirname, "../frontend/dist");
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.use((req, res, next) => {
+    if (req.method === "GET" && !req.path.startsWith("/api") && !req.path.startsWith("/vanilla")) {
+      return res.sendFile(path.join(frontendDist, "index.html"));
+    }
+    next();
+  });
 }
 
 // Render dynamic PORT binding (defaults to 5000 locally)
