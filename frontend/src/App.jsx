@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { API_BASE_URL } from "./config/api";
 import CommentSystem from "./components/CommentSystem";
 import SubscriptionDashboard from "./components/SubscriptionDashboard";
 import SecurityDashboard from "./components/SecurityDashboard";
@@ -104,7 +105,7 @@ function App() {
   }, []);
 
   const initSecurityIstTheme = () => {
-    fetch("http://localhost:5000/api/security/login", {
+    fetch(`${API_BASE_URL}/security/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, browser: "Standard Browser", ipAddress: "103.21.124.89" })
@@ -120,7 +121,7 @@ function App() {
 
   const fetchHistoryAndProfile = () => {
     // 1. Fetch User Profile
-    fetch(`http://localhost:5000/api/users/${userId}`)
+    fetch(`${API_BASE_URL}/users/${userId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.user) {
@@ -136,7 +137,7 @@ function App() {
       .catch((err) => console.error("Profile error:", err));
 
     // 2. Fetch Download History
-    fetch(`http://localhost:5000/api/downloads/history/${userId}`)
+    fetch(`${API_BASE_URL}/downloads/history/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.downloads) {
@@ -166,7 +167,7 @@ function App() {
       setMessage(`Updating subscription plan to ${newPlan}...`);
 
       const response = await fetch(
-        `http://localhost:5000/api/users/update-plan/${userId}`,
+        `${API_BASE_URL}/users/update-plan/${userId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -197,7 +198,7 @@ function App() {
   async function toggleExpiry() {
     try {
       const nextState = !isExpired;
-      const res = await fetch(`http://localhost:5000/api/users/expiry/${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/users/expiry/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isExpired: nextState })
@@ -215,7 +216,7 @@ function App() {
   // Reset Registered Device for Testing
   async function resetDevice() {
     try {
-      const res = await fetch(`http://localhost:5000/api/users/device/${userId}`, {
+      const res = await fetch(`${API_BASE_URL}/users/device/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ registeredDevice: null })
@@ -236,7 +237,7 @@ function App() {
       setMessage(`Verifying subscription & download permission for "${video.title}"...`);
 
       const response = await fetch(
-        "http://localhost:5000/api/downloads/download",
+        `${API_BASE_URL}/downloads/download`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -627,7 +628,7 @@ function App() {
                 onClick={async () => {
                   try {
                     setMessage("Simulating simultaneous parallel download block across multiple devices...");
-                    const res = await fetch("http://localhost:5000/api/downloads/download", {
+                    const res = await fetch(`${API_BASE_URL}/downloads/download`, {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify({ userId, videoId: selectedVideo?.id, simulateConcurrent: true })
@@ -757,7 +758,7 @@ function App() {
                       <button
                         onClick={async () => {
                           const newStatus = item.status === "Failed" ? "Completed" : "Failed";
-                          await fetch(`http://localhost:5000/api/downloads/status/${item._id}`, {
+                          await fetch(`${API_BASE_URL}/downloads/status/${item._id}`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ status: newStatus })

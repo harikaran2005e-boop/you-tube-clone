@@ -1,0 +1,21 @@
+# ========================================================
+# Render Blueprint Configuration (render.yaml)
+# ========================================================
+# This blueprint defines:
+# 1. Unified Fullstack Web Service (Monolithic Node + React)
+#    Serves React Frontend on `/`, Vanilla on `/vanilla`, and API on `/api/*`
+# ========================================================
+
+services:
+  - type: web
+    name: video-management-platform
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false # Set your MongoDB Atlas connection string in Render Dashboard

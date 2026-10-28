@@ -21,8 +21,9 @@ import {
   Lock,
   ArrowUpRight
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
-const API_BASE = "http://localhost:5000/api/subscription";
+const API_BASE = `${API_BASE_URL}/subscription`;
 
 export default function SubscriptionDashboard({ userId = "6aaa685bc7a8e4a210c6d15f", theme = "light", onPlanChange }) {
   const [billingCycle, setBillingCycle] = useState("monthly"); // monthly, quarterly, yearly

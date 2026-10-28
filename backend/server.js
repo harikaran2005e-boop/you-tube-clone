@@ -1,7 +1,12 @@
+
+const dns = require("node:dns");
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
+
 
 const connectDB = require("./config/db");
 const downloadRoutes = require("./routes/downloadRoutes");
@@ -145,12 +150,32 @@ app.use("/api/subscription", subscriptionRoutes);
 const securityRoutes = require("./routes/securityRoutes");
 app.use("/api/security", securityRoutes);
 
-// Real-Time Video Call Conference routes (Task 6)
 const meetingRoutes = require("./routes/meetingRoutes");
 app.use("/api/meetings", meetingRoutes);
 
-const PORT = 5000;
+// Serve production frontend build if dist folder exists
+const path = require("path");
+const fs = require("fs");
+const frontendDist = path.join(__dirname, "../frontend/dist");
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api") || req.path.startsWith("/vanilla")) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDist, "index.html"));
+  });
+}
+
+// Serve Vanilla JS implementation under /vanilla route
+const vanillaDist = path.join(__dirname, "../Vanilla");
+if (fs.existsSync(vanillaDist)) {
+  app.use("/vanilla", express.static(vanillaDist));
+}
+
+// Render dynamic PORT binding (defaults to 5000 locally)
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
+  console.log(`Server running on port ${PORT}`);
 });

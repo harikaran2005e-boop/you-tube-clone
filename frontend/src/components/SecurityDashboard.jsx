@@ -20,8 +20,9 @@ import {
   X,
   Sparkles
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
-const API_BASE = "http://localhost:5000/api/security";
+const API_BASE = `${API_BASE_URL}/security`;
 
 export default function SecurityDashboard({
   userId = "6aaa685bc7a8e4a210c6d15f",

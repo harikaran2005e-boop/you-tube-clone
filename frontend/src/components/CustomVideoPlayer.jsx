@@ -23,6 +23,7 @@ import {
   Settings,
   ShieldAlert
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
 const SPEED_OPTIONS = [0.5, 1, 1.25, 1.5, 2];
 const QUALITY_OPTIONS = ["1080p Full HD", "720p HD", "480p", "360p"];
@@ -157,7 +158,7 @@ export default function CustomVideoPlayer({
     setAutoplayCount(null);
 
     // Fetch progress from backend
-    fetch(`http://localhost:5000/api/videos/progress/${userId}/${vId}`)
+    fetch(`${API_BASE_URL}/videos/progress/${userId}/${vId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.progress && data.progress.lastPosition > 2) {
@@ -222,7 +223,7 @@ export default function CustomVideoPlayer({
     );
 
     // Save to Backend API
-    fetch("http://localhost:5000/api/videos/progress", {
+    fetch(`${API_BASE_URL}/videos/progress`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

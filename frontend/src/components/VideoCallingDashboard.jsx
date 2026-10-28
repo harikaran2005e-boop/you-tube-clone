@@ -33,6 +33,7 @@ import {
   Camera,
   X
 } from "lucide-react";
+import { API_BASE_URL } from "../config/api";
 
 export default function VideoCallingDashboard({
   userId = "6aaa685bc7a8e4a210c6d15f",
@@ -139,7 +140,7 @@ export default function VideoCallingDashboard({
   useEffect(() => {
     if (inCall && meeting) {
       pollTimerRef.current = setInterval(() => {
-        fetch(`http://localhost:5000/api/meetings/${meeting.roomId}`)
+        fetch(`${API_BASE_URL}/meetings/${meeting.roomId}`)
           .then((res) => res.json())
           .then((data) => {
             if (data.meeting) {
@@ -169,7 +170,7 @@ export default function VideoCallingDashboard({
   const handleCreateMeeting = async () => {
     try {
       setStatusMessage("Creating secure meeting room...");
-      const res = await fetch("http://localhost:5000/api/meetings/create", {
+      const res = await fetch(`${API_BASE_URL}/meetings/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -202,7 +203,7 @@ export default function VideoCallingDashboard({
     }
     try {
       setStatusMessage(`Joining meeting room ${targetRoomId}...`);
-      const res = await fetch("http://localhost:5000/api/meetings/join", {
+      const res = await fetch(`${API_BASE_URL}/meetings/join`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -252,7 +253,7 @@ export default function VideoCallingDashboard({
 
   const updateStateOnBackend = (updateObj) => {
     if (!meeting) return;
-    fetch(`http://localhost:5000/api/meetings/${meeting.roomId}/participant-state`, {
+    fetch(`${API_BASE_URL}/meetings/${meeting.roomId}/participant-state`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId, ...updateObj })
@@ -347,7 +348,7 @@ export default function VideoCallingDashboard({
     if (!chatInput.trim() && !selectedFile) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/meetings/${meeting.roomId}/chat`, {
+      const res = await fetch(`${API_BASE_URL}/meetings/${meeting.roomId}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -375,7 +376,7 @@ export default function VideoCallingDashboard({
   const executeModeration = async (action, targetUserId = null, extraParams = {}) => {
     if (!meeting) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/meetings/${meeting.roomId}/moderation`, {
+      const res = await fetch(`${API_BASE_URL}/meetings/${meeting.roomId}/moderation`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -401,7 +402,7 @@ export default function VideoCallingDashboard({
   const handleLeaveCall = async (endForAll = false) => {
     if (!meeting) return;
     try {
-      await fetch(`http://localhost:5000/api/meetings/${meeting.roomId}/leave`, {
+      await fetch(`${API_BASE_URL}/meetings/${meeting.roomId}/leave`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, endMeetingForAll: endForAll })
