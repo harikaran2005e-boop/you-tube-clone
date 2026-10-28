@@ -118,14 +118,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Home route
-app.get("/", (req, res) => {
+// API Health / Status route
+app.get("/api/health", (req, res) => {
   res.send("Video Download & Commenting Management Backend is Running");
-});
-
-// Temporary test route
-app.get("/test-user-route", (req, res) => {
-  res.send("Server test route is working");
 });
 
 // Download routes
@@ -158,7 +153,10 @@ const path = require("path");
 const fs = require("fs");
 const vanillaDist = path.join(__dirname, "../Vanilla");
 if (fs.existsSync(vanillaDist)) {
-  app.use("/vanilla", express.static(vanillaDist));
+  app.use("/vanilla", express.static(vanillaDist, { index: "intern.html" }));
+  app.get("/vanilla", (req, res) => {
+    res.sendFile(path.join(vanillaDist, "intern.html"));
+  });
 }
 
 // Serve production frontend build if dist folder exists (Express 5 compatible SPA routing)
@@ -170,6 +168,10 @@ if (fs.existsSync(frontendDist)) {
       return res.sendFile(path.join(frontendDist, "index.html"));
     }
     next();
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Video Download & Commenting Management Backend is Running");
   });
 }
 
